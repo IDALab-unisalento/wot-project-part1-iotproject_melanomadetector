@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
-import { Directory, Filesystem } from '@capacitor/filesystem';
+import {Directory, Filesystem, WriteFileResult} from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
-import { Platform } from '@ionic/angular';
+import {ModalController, Platform} from '@ionic/angular';
+import {ApideepskinService} from './apideepskin.service';
+import {deepskin} from '../../confidential/deepskinapi';
+import {HttpHeaders} from '@angular/common/http';
+import {ReadingModalComponent} from '../components/reading-modal/reading-modal.component';
+import {Readings_raw} from '../../model/readings_raw';
+
 
 
 
@@ -12,9 +18,9 @@ import { Platform } from '@ionic/angular';
 })
 export class PhotoService {
   public photos: UserPhoto[] = [];
-  private PHOTO_STORAGE: string = 'photos';
-
-  constructor(private platform: Platform) {}
+  private PHOTO_STORAGE = 'photos';
+  protected image: string;
+  constructor(private platform: Platform, private httpService: ApideepskinService, private modalController: ModalController) {}
 
   public async loadSaved() {
     // Retrieve cached photo array data
@@ -24,7 +30,7 @@ export class PhotoService {
     // If running on the web...
     if (!this.platform.is('hybrid')) {
       // Display the photo by reading into base64 format
-      for (let photo of this.photos) {
+      for (const photo of this.photos) {
         // Read each saved photo's data from the Filesystem
         const readFile = await Filesystem.readFile({
           path: photo.filepath,
@@ -55,7 +61,7 @@ export class PhotoService {
     });
 
     const savedImageFile = await this.savePicture(capturedPhoto);
-
+    const analysis = await this.sendAnalysis(capturedPhoto);
     // Add new photo to Photos array
     this.photos.unshift(savedImageFile);
 
@@ -64,6 +70,47 @@ export class PhotoService {
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos),
     });
+  }
+
+  private async sendAnalysis(cameraPhoto: Photo){
+    const headers = new HttpHeaders({
+      'Content-Type':  'application/json',
+      authorization : deepskin.token
+    });
+
+    const base64Data = await this.readAsBase64(cameraPhoto);
+
+    // Write the file to the data directory
+    const fileName = new Date().getTime() + '.jpeg';
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Data,
+    });
+
+    console.log({
+        base64: base64Data,
+        type: 'jpg'
+  });
+    this.image = base64Data;
+    await this.httpService.getPrediction({
+      base64: base64Data,
+      type: 'jpg'
+    }).subscribe(res => {
+      console.log(res[0]);
+      this.presentReadingModal(res[0], this.image);
+    });
+  }
+
+  async presentReadingModal(reading: Readings_raw, image: string){
+    const modal = await this.modalController.create({
+      component : ReadingModalComponent,
+      componentProps: {
+        reading,
+        image
+      }
+    });
+    await modal.present();
   }
 
   // Save picture to file on device
@@ -142,7 +189,7 @@ export class PhotoService {
         resolve(reader.result);
       };
       reader.readAsDataURL(blob);
-    });
+    })
 }
 
 export interface UserPhoto {

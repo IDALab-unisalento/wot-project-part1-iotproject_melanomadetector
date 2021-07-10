@@ -1,0 +1,39 @@
+<ion-content>
+  <div id="title">
+    <h1>
+      Signup melanomaDetector
+    </h1>
+    <small>
+      already have an account? <a routerLink="/login">login here</a>
+    </small>
+  </div>
+  <form id="loginform">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input  name="name" type="text" [(ngModel)]="postDataUser.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Surname</ion-label>
+        <ion-input  name="surname" type="text" [(ngModel)]="postDataUser.surname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Codice Fiscale</ion-label>
+        <ion-input  name="cf" type="text" [(ngModel)]="postDataUser.codiceFiscale"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Age</ion-label>
+        <ion-input  name="age" type="number" [(ngModel)]="postDataUser.age"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input  name="email" type="email" [(ngModel)]="postDataUser.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input name="password" type="password" [(ngModel)]="postDataUser.password"></ion-input>
+      </ion-item>
+      <ion-button id="signupButton" expand="black" shape="round" color="success" (click)="signupAction()">Signup</ion-button>
+    </ion-list>
+  </form>
+</ion-content>

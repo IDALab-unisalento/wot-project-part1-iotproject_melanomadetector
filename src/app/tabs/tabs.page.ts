@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import {StorageService} from '../services/storage.service';
+import {AuthService} from '../services/auth.service';
+import {MenuController} from '@ionic/angular';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +10,12 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(
+              private authService: AuthService
+             ) {}
+
+  logout(){
+    this.authService.logout();
+  }
 
 }

@@ -4,7 +4,7 @@ import {environment} from '../../environments/environment.prod';
 import {Observable} from 'rxjs';
 import {Token} from '../../model/token';
 import {deepskin} from '../../confidential/deepskinapi';
-import {Readings} from '../../model/readings';
+import {Readings_raw} from '../../model/readings_raw';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +25,13 @@ export class ApideepskinService {
     }, options);
   }
 
-  getPrediction(data: any): Observable<Readings>{
+  getPrediction(data: any): Observable<Readings_raw>{
     const headers = new HttpHeaders({
       'Content-Type':  'application/json',
       authorization: deepskin.token
     });
     const options = {headers, withCredentials: false};
-    return this.http.post<Readings>(deepskin.api + deepskin.analysisPath, data, options);
+    return this.http.post<Readings_raw>(deepskin.api + deepskin.analysisPath, data, options);
 
   }
 }

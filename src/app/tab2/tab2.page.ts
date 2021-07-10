@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { UserPhoto, PhotoService } from '../services/photo.service';
+import {AuthService} from '../services/auth.service';
+import {User} from '../../model/user';
 
 @Component({
   selector: 'app-tab2',
@@ -9,10 +11,12 @@ import { UserPhoto, PhotoService } from '../services/photo.service';
 })
 export class Tab2Page {
 
-  constructor(public photoService: PhotoService, public actionSheetController: ActionSheetController) {}
+  loggedInUser: User = {} as User;
+  constructor(private authService: AuthService, public photoService: PhotoService, public actionSheetController: ActionSheetController) {}
 
   async ngOnInit() {
     await this.photoService.loadSaved();
+
   }
 
   public async showActionSheet(photo: UserPhoto, position: number) {
@@ -35,5 +39,11 @@ export class Tab2Page {
       }]
     });
     await actionSheet.present();
+  }
+
+
+  logout(){
+    console.log('hey');
+    this.authService.logout();
   }
 }
