@@ -16,5 +16,9 @@
       <ion-col>You have a: </ion-col>
       <ion-col>{{reading["8way_results"] === 0 ? 'MELANOMA' : reading["8way_results"] === 1 ? 'NEVUS' : reading["8way_results"] === 2 ? 'BASAL CELL CARCINOMA' : reading["8way_results"] === 3 ?  'ACTINIC KERATOSIS' : reading["8way_results"] === 4 ? 'SOLAR LENTIGO' : reading["8way_results"] === 5 ? 'DERMATOFIBROMA' : reading["8way_results"] === 6 ? 'VASCULAR LESION' : 'SQUAMOUS CELL CARCINOMA'}}</ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col>With probability:</ion-col>
+      <ion-col>{{reading["8way_prob"][reading["8way_results"]]*100}}%</ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

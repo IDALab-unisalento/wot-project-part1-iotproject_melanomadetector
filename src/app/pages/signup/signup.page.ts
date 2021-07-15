@@ -41,14 +41,14 @@ export class SignupPage implements OnInit {
           age: this.postDataUser.age,
           email: this.postDataUser.email,
           password: this.postDataUser.password,
-          codiceFiscale: this.postDataUser.codiceFiscale
+          codiceFiscale: this.postDataUser.codiceFiscale,
+          type:"patient"
       };
   }
   signupAction(){
     if (this.validateInputs()){
       console.log(this.createPostData());
       this.authService.signup(this.createPostData()).subscribe((res: any) => {
-            console.log(res);
             if (res) {
               this.storageService.store(AuthConstants.AUTH, res).then(() => {
                 this.router.navigate(['home']);

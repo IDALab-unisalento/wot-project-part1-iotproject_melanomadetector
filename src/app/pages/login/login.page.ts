@@ -14,8 +14,9 @@ import {ToastService} from '../../services/toast.service';
 export class LoginPage implements OnInit {
 
   public postData = {
-    email: '',
-    password: ''
+    "email": '',
+    "password": '',
+    "type":'patient'
   };
 
   constructor( private router: Router,
@@ -36,7 +37,6 @@ export class LoginPage implements OnInit {
     if (this.validateInputs()){
       console.log(this.postData);
       this.authService.login(this.postData).subscribe((res: any) => {
-            console.log(res);
             if (res) {
               this.storageService.store(AuthConstants.AUTH, res).then(() => {
                 this.router.navigate(['home']);

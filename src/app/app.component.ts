@@ -4,7 +4,6 @@ import {environment} from '../environments/environment.prod';
 
 import {deepskin} from '../confidential/deepskinapi';
 import {HttpHeaders} from '@angular/common/http';
-import {Token} from '../model/token';
 import {ApideepskinService} from './services/apideepskin.service';
 @Component({
   selector: 'app-root',

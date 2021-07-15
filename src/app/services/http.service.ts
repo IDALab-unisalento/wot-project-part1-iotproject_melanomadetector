@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment.prod';
+import {mdAPI} from '../../confidential/awsAPI';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,12 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   post(serviceName: string, data: any, path: string){
-    const headers = new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:8100/'
-    });
-    const options = { header: headers, withCredentials: false};
+    let reqOpts = {
+      headers: new HttpHeaders(),
+      params: new HttpParams()
+    };
 
-    const url = environment.apiUrl;
-    console.log(url + path);
-    return this.http.post(url + path, data, options);
+    const url = mdAPI.api;
+    return this.http.post(url + path, data);
   }
 }

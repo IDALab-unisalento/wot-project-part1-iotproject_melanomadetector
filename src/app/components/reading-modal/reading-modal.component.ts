@@ -41,8 +41,7 @@ export class ReadingModalComponent implements OnInit {
     this.readingPostData.highestPredictionScore = this.reading['8way_prob'][this.reading['8way_results']];
     this.readingPostData.risk = this.reading.risk;
     this.readingPostData.user = this.loggedInUser;
-    this.readingsService.saveReading(this.readingPostData).subscribe(res => {
-      console.log(res);
+    this.readingsService.saveReading(this.readingPostData).subscribe(() => {
     });
     this.modalController.dismiss();
   }

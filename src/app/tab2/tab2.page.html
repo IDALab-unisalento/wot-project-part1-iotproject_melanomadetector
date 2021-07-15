@@ -7,19 +7,33 @@
 </ion-header>
 
 <ion-content>
+  <h2 style="padding: 10px">
+    Your Readings
+  </h2>
+    <ion-grid>
+      <ion-row size="6" *ngFor="let reading of readings; index as position">
+      <ion-col>
+        <ion-img [src]="reading.image" ></ion-img>
+      </ion-col>
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-subtitle><small>{{reading.user.codiceFiscale | uppercase}}</small></ion-card-subtitle>
+              <ion-card-title>{{reading.highestPredictionClass}}</ion-card-title>
+            </ion-card-header>
 
-  <ion-grid>
-    <ion-row>
-    <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-      <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
-    </ion-col>
-    </ion-row>
-  </ion-grid>
+            <ion-card-content>
+              Risk: {{reading.risk === 0 ? 'LOW' : reading.risk === 1 ? 'MEDIUM' : 'HIGH' }}<br>
+             Probability: {{reading.highestPredictionScore}}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="photoService.addNewToGallery()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button (click)="photoService.addNewToGallery()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>
